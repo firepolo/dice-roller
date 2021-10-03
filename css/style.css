@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+:root {
+  --primary-color: #ea4c4c;
+}
+
+* {
+  font-family: 'Lato', sans-serif;
+}
+
+.layer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.background-dark {
+  background-color: #ddd;
+}
+
+.background-light {
+  background-color: #eee;
+}
+
+.layer-foreground {
+  display: flex;
+  align-items: center;
+}
+
+.col-5, .col-2, .col-12 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-local-score-wrapper {
+  background-color: var(--primary-color);
+  text-align: center;
+  padding: 0.5rem 2rem;
+}
+
+.player-local-score {
+  color: #fff;
+}
+
+.dice {
+  width: 6rem;
+  height: 6rem;
+}
+
+.dice-face {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  background-color: #fff;
+}
+
+.dice-face > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dice-face > .dice-col-center {
+  justify-content: center;
+}
+
+.dice-face > .dice-col-top {
+  justify-content: start;
+}
+
+.dice-face > .dice-col-bottom {
+  justify-content: end;
+}
+
+.dice-face > div > div {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+}
+
+.dice-face-top {
+}
