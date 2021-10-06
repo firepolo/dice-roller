@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400&display=swap');
 
 :root {
   --primary-color: #ea4c4c;
@@ -18,13 +18,30 @@
 
 * {
   font-family: 'Lato', sans-serif;
+  font-weight: 300;
 }
 
 h1, h2, h3, h4, h5 {
+  margin: 0;
   text-transform: uppercase;
 }
 
+h1 {
+  font-size: 5rem;
+  color: var(--primary-color);
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  margin-top: 0.5rem;
+  font-size: 1.8rem;
+}
+
 h4 {
+  font-size: 1.3rem;
   cursor: pointer;
   transition: transform .25s;
 }
@@ -60,25 +77,40 @@ h4:hover {
   align-items: center;
 }
 
-.player-local-score-wrapper {
+.player-current-score-wrapper {
   background-color: var(--primary-color);
   text-align: center;
   padding: 0.5rem 2rem;
 }
 
-.player-local-score {
+.player-current-score {
   color: #fff;
+}
+
+.player-title.active {
+  display: flex;
+  align-items: center;
+  padding-left: 2.3rem;
+  font-weight: 400;
+}
+
+.player-title.active::after {
+  content: '';
+  display: block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  margin-left: 1.5rem;
+  background-color: var(--primary-color);
 }
 
 .dice {
   width: 6rem;
   height: 6rem;
   position: relative;
-  animation: mix 5s;
+  /*animation: mix 5s;*/
   transform-style: preserve-3d;
   will-change: transform;
-  /*filter: drop-shadow(0px 0px 2rem #ccc);*/
-  /*box-shadow: 0px 0px 2rem #ccc;*/
 }
 
 .dice-face {
@@ -91,6 +123,7 @@ h4:hover {
   box-sizing: border-box;
   padding: 0.5rem;
   background-color: #fff;
+  box-shadow: 0px 0px 2rem #ddd;
 }
 
 .dice-face > div {
@@ -112,8 +145,8 @@ h4:hover {
 }
 
 .dice-face > div > div {
-  width: 10px;
-  height: 10px;
+  width: 0.8rem;
+  height: 0.8rem;
   border-radius: 50%;
   background-color: var(--primary-color);
 }
@@ -140,4 +173,10 @@ h4:hover {
 
 .dice-face-right {
   transform: rotateY(-90deg) translateZ(3rem);
+}
+
+.menu-down {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
