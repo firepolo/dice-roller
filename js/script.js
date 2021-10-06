@@ -50,13 +50,13 @@ function reset() {
 }
 
 function roll() {
-  const dice = 1 + Math.random() * 5 | 0;
+  const value = 1 + Math.random() * 5 | 0;
 
-  if (dice == 1) {
+  if (value == 1) {
     currentScores[currentPlayerIndex].setValue(0);
     hold();
   } else {
-    currentScores[currentPlayerIndex].addValue(dice);
+    currentScores[currentPlayerIndex].addValue(value);
   }
 }
 
@@ -64,9 +64,9 @@ function hold() {
   const currentIndex = currentPlayerIndex;
   globalScores[currentIndex].addValue(currentScores[currentPlayerIndex].getValue());
 
-  if (globalScores[currentIndex].getValue() > 100) {
+  if (globalScores[currentIndex].getValue() >= SCORE_FOR_WIN) {
     winner.setValue(playerTitles[currentIndex].getValue());
-    overlay.getDom().classList.addValue('visible');
+    overlay.getDom().classList.add('visible');
   }
   else {
     setCurrentPlayer(currentIndex + 1 & 1);
@@ -74,11 +74,14 @@ function hold() {
   }
 }
 
+const SCORE_FOR_WIN = 10;
+
 const playerTitles = Settable.selectByClassName('player-title');
 const currentScores = Settable.selectByClassName('player-current-score', true);
 const globalScores = Settable.selectByClassName('player-global-score', true);
 const winner = Settable.selectById('winner');
 const overlay = Settable.selectById('overlay');
+const dice = Settable.selectById('dice');
 
 let currentPlayerIndex = 0;
 
@@ -89,7 +92,6 @@ overlay.getDom().onclick = (e) => {
   e.preventDefault();
   e.stopPropagation();
   reset();
-  console.log('test');
 }
 
 reset();
