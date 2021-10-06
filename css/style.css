@@ -5,17 +5,6 @@
   --jump-height: -5rem;
 }
 
-@keyframes mix {
-  0% { transform: scale(1) rotate3d(1.0, 1.0, 1.0, 184deg); }
-  12.5% { transform: scale(1.5) rotate3d(1.0, 1.0, 0.5, 500deg); }
-  25% { transform: scale(1) rotate3d(1.0, 1.0, 0.0, 100deg); }
-  37.5% { transform: scale(1.5) rotate3d(0.6, 0.7, 1.0, -300deg); }
-  50% { transform: scale(1) rotate3d(1.0, 0.2, 0.8, 90deg); }
-  62.5% { transform: scale(1.5) rotate3d(1.0, 1.0, 1.0, 500deg); }
-  75% { transform: scale(1) rotate3d(1.0, 1.0, 1.0, 0deg); }
-  100% { transform: scale(1) rotate3d(1.0, 1.0, 1.0, 0deg); }
-}
-
 * {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
@@ -125,7 +114,6 @@ h4:hover {
   width: 6rem;
   height: 6rem;
   position: relative;
-  /*animation: mix 5s;*/
   transform-style: preserve-3d;
   will-change: transform;
 }
