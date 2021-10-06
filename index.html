@@ -13,16 +13,25 @@
       <div class="col-6 background-light"></div>
     </div>
     <div class="layer layer-foreground">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <h4>new game</h4>
+            <h4 id="newgame" class="mb-5">new game</h4>
           </div>
         </div>
         <div class="row">
           <div class="col-5">
-            <h2 class="player-title active">player 1</h2>
-            <h1 class="player-global-score">43</h1>
+            <h2 class="player-title">player 1</h2>
+          </div>
+          <div class="col-2">
+          </div>
+          <div class="col-5">
+            <h2 class="player-title">player 2</h2>
+          </div>
+        </div>
+        <div class="row pb-5">
+          <div class="col-5">
+            <h1 class="player-global-score">0</h1>
           </div>
           <div class="col-2">
             <div class="dice">
@@ -90,29 +99,33 @@
             </div>
           </div>
           <div class="col-5">
-            <h2 class="player-title">player 2</h2>
-            <h1 class="player-global-score">72</h1>
+            <h1 class="player-global-score">0</h1>
           </div>
         </div>
-        <div class="row">
+        <div class="row pt-5">
           <div class="col-5">
-            <div class="player-local-score-wrapper">
+            <div class="player-current-score-wrapper">
               <h5>current</h5>
-              <h3 class="player-local-score">11</h3>
+              <h3 class="player-current-score">0</h3>
             </div>
           </div>
-          <div class="col-2">
-            <h4>roll dice</h4>
-            <h4>hold</h4>
+          <div class="col-2 menu-down">
+            <h4 id="roll">roll dice</h4>
+            <h4 id="hold">hold</h4>
           </div>
           <div class="col-5">
-            <div class="player-local-score-wrapper">
+            <div class="player-current-score-wrapper">
               <h5>current</h5>
-              <h3 class="player-local-score">0</h3>
+              <h3 class="player-current-score">0</h3>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div id="overlay">
+      <h1 id="winner"></h1>
+      <h1>win!</h1>
+      <div id="particle-generator"></div>
     </div>
     <script src="js/script.js"></script>
   </body>
