@@ -1,74 +1,95 @@
 class Settable {
-  static selectByClassName(className) {
-    return Array.prototype.map.call(document.getElementsByClassName(className), e => new Settable(e));
+  static selectByClassName(className, isInt = false) {
+    return Array.prototype.map.call(document.getElementsByClassName(className), e => new Settable(e, isInt));
   }
 
-  constructor(dom) {
+  static selectById(id, isInt = false) {
+    return new Settable(document.getElementById(id), isInt);
+  }
+
+  constructor(dom, isInt = false) {
     this.dom = dom;
-    this.value = parseInt(this.dom.textContent);
+    this.value = isInt ? parseInt(this.dom.textContent) : this.dom.textContent;
   }
 
-  get() {
+  getDom() {
+    return this.dom;
+  }
+
+  getValue() {
     return this.value;
   }
 
-  set(value) {
+  setValue(value) {
     this.value = value;
     this.dom.textContent = this.value;
   }
 
-  add(value) {
-    this.set(this.value + value);
+  addValue(value) {
+    this.setValue(this.value + value);
   }
 }
 
 function setCurrentPlayer(currentIndex) {
-  playerTitles[currentPlayerIndex].classList.remove('active');
-  playerTitles[currentIndex].classList.add('active');
+  playerTitles[currentPlayerIndex].getDom().classList.remove('active');
+  playerTitles[currentIndex].getDom().classList.add('active');
   currentPlayerIndex = currentIndex;
 }
 
 function reset() {
   for (const score of currentScores) {
-    score.set(0);
+    score.setValue(0);
   }
 
   for (const score of globalScores) {
-    score.set(0);
+    score.setValue(0);
   }
 
   setCurrentPlayer(Math.random() * 2 | 0);
+  overlay.getDom().classList.remove('visible');
 }
 
 function roll() {
   const dice = 1 + Math.random() * 5 | 0;
 
   if (dice == 1) {
-    currentScores[currentPlayerIndex].set(0);
+    currentScores[currentPlayerIndex].setValue(0);
     hold();
   } else {
-    currentScores[currentPlayerIndex].add(dice);
+    currentScores[currentPlayerIndex].addValue(dice);
   }
 }
 
 function hold() {
   const currentIndex = currentPlayerIndex;
-  globalScores[currentIndex].add(currentScores[currentPlayerIndex].get());
+  globalScores[currentIndex].addValue(currentScores[currentPlayerIndex].getValue());
 
-  if (globalScores[currentIndex].get() > 100) {}
-
-  setCurrentPlayer(currentIndex + 1 & 1);
-  currentScores[currentIndex].set(0);
+  if (globalScores[currentIndex].getValue() > 100) {
+    winner.setValue(playerTitles[currentIndex].getValue());
+    overlay.getDom().classList.addValue('visible');
+  }
+  else {
+    setCurrentPlayer(currentIndex + 1 & 1);
+    currentScores[currentIndex].setValue(0);
+  }
 }
 
-const playerTitles = document.getElementsByClassName('player-title');
-const currentScores = Settable.selectByClassName('player-current-score');
-const globalScores = Settable.selectByClassName('player-global-score');
+const playerTitles = Settable.selectByClassName('player-title');
+const currentScores = Settable.selectByClassName('player-current-score', true);
+const globalScores = Settable.selectByClassName('player-global-score', true);
+const winner = Settable.selectById('winner');
+const overlay = Settable.selectById('overlay');
 
 let currentPlayerIndex = 0;
 
 document.getElementById('newgame').onclick = reset;
 document.getElementById('roll').onclick = roll;
 document.getElementById('hold').onclick = hold;
+overlay.getDom().onclick = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  reset();
+  console.log('test');
+}
 
 reset();
