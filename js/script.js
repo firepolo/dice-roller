@@ -1,15 +1,15 @@
 class Settable {
-  static selectByClassName(className, isInt = false) {
-    return Array.prototype.map.call(document.getElementsByClassName(className), e => new Settable(e, isInt));
+  static selectByClassName(className) {
+    return Array.prototype.map.call(document.getElementsByClassName(className), e => new Settable(e));
   }
 
-  static selectById(id, isInt = false) {
-    return new Settable(document.getElementById(id), isInt);
+  static selectById(id) {
+    return new Settable(document.getElementById(id));
   }
 
-  constructor(dom, isInt = false) {
+  constructor(dom) {
     this.dom = dom;
-    this.value = isInt ? parseInt(this.dom.textContent) : this.dom.textContent;
+    this.value = this.dom.textContent;
   }
 
   getDom() {
@@ -30,10 +30,45 @@ class Settable {
   }
 }
 
+function mix(callback)
+{
+  const MAX_ITERATION = 40;
+  let iteration = 0;
+
+  const n = (Math.random() * 6) | 0;
+  const target = DICE_ROTATION[n];
+  const origin = DICE_ROTATION[rotationIndex];
+
+  const dx = (target[0] - origin[0]) / MAX_ITERATION;
+  const dy = (target[1] - origin[1]) / MAX_ITERATION;
+  const dz = (target[2] - origin[2]) / MAX_ITERATION;
+  const dd = (target[3] - origin[3]) / MAX_ITERATION;
+
+  function tick()
+  {
+    const s = Math.abs(Math.sin(Math.PI / MAX_ITERATION * iteration)) + 1;
+    const x = dx * iteration + origin[0];
+    const y = dy * iteration + origin[1];
+    const z = dz * iteration + origin[2];
+    const d = dd * iteration + origin[3];
+
+    dice.getDom().style['transform'] = `scale(${s}) rotate3d(${x}, ${y}, ${z}, ${d}deg)`;
+
+    if (++iteration > MAX_ITERATION) {
+      callback(n);
+      return;
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}
+
 function setCurrentPlayer(currentIndex) {
-  playerTitles[currentPlayerIndex].getDom().classList.remove('active');
+  playerTitles[playerIndex].getDom().classList.remove('active');
   playerTitles[currentIndex].getDom().classList.add('active');
-  currentPlayerIndex = currentIndex;
+  playerIndex = currentIndex;
 }
 
 function reset() {
@@ -50,19 +85,21 @@ function reset() {
 }
 
 function roll() {
-  const value = 1 + Math.random() * 5 | 0;
+  mix((value) => {
+    rotationIndex = value;
 
-  if (value == 1) {
-    currentScores[currentPlayerIndex].setValue(0);
-    hold();
-  } else {
-    currentScores[currentPlayerIndex].addValue(value);
-  }
+    if (value == 0) {
+      currentScores[playerIndex].setValue(0);
+      hold();
+    } else {
+      currentScores[playerIndex].addValue(value + 1);
+    }
+  });
 }
 
 function hold() {
-  const currentIndex = currentPlayerIndex;
-  globalScores[currentIndex].addValue(currentScores[currentPlayerIndex].getValue());
+  const currentIndex = playerIndex;
+  globalScores[currentIndex].addValue(currentScores[playerIndex].getValue());
 
   if (globalScores[currentIndex].getValue() >= SCORE_FOR_WIN) {
     winner.setValue(playerTitles[currentIndex].getValue());
@@ -74,16 +111,25 @@ function hold() {
   }
 }
 
-const SCORE_FOR_WIN = 10;
+const SCORE_FOR_WIN = 100;
+const DICE_ROTATION = [
+  [ 0, 0, 0, 0 ],
+  [ 1, 0, 0, -90 ],
+  [ 0, 1, 0, -90 ],
+  [ 0, 1, 0, 90 ],
+  [ 1, 0, 0, 90 ],
+  [ 0, 1, 0, 180 ]
+];
 
 const playerTitles = Settable.selectByClassName('player-title');
-const currentScores = Settable.selectByClassName('player-current-score', true);
-const globalScores = Settable.selectByClassName('player-global-score', true);
+const currentScores = Settable.selectByClassName('player-current-score', 0);
+const globalScores = Settable.selectByClassName('player-global-score', 0);
 const winner = Settable.selectById('winner');
 const overlay = Settable.selectById('overlay');
 const dice = Settable.selectById('dice');
 
-let currentPlayerIndex = 0;
+let rotationIndex = 0;
+let playerIndex = 0;
 
 document.getElementById('newgame').onclick = reset;
 document.getElementById('roll').onclick = roll;
